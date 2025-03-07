@@ -1,0 +1,46 @@
+\subsection*{Primer ejercicio}
+Para el primer ejercicio, sea $g(x)$ definido de manera idéntica que para el segundo inciso;
+    recordando $g^*(x)$:
+    \begin{equation}
+        g^*(x) = \begin{cases}
+            1 & \text{si }{\eta}(x) >\frac{1}{2}, \\
+            0 & \text{en otro caso.}
+        \end{cases}
+    \end{equation}
+
+    Debido a que $Y\in\{0,1\}$, entonces meramente deben sumarse las probabilidades de cuando 
+    $g(X) = 0$ y $Y=1$ en un primer caso, o que $g(X) = 1$ y $Y=0$. Debido a que $\eta(x)$ es 
+    meramente la probabilidad de que $Y$ sea 1 dado que $X$ sea $x$, entonces, si se toma 
+    el valor esperado: 
+    \begin{align}
+        L^* &=\P(g^*(X)\ne Y) \\
+        &= \E\left[\P(Y=1|X=x)\ind[g^*(X)=0]+\P(Y=0|X=x)\ind[g^*(X)=1]|X=x\right] \\
+        &= \E\left[\eta(X)\ind[g^*(X)=0]+(1-\eta(X))\ind[g^*(X)=1]|X=x\right]
+    \end{align}
+
+    De manera análoga, para un clasificador $g$ cualquiera, entonces la función de pérdida es la siguiente: 
+    \begin{equation}
+        \P(g(X)\ne Y) = \E\left[\eta(X)\ind[g(X)=0]+(1-\eta(X))\ind[g(X)=1]|X=x\right]
+    \end{equation}
+
+    Se decide simplificar la notación para que $\E_X[]\cdot] = \E[\cdot|X=x]$.Restando las dos cantidades entonces se obtiene la siguiente ecuación:
+    \begin{align}
+        \P(g(X)\ne Y) - L^* &=
+        \E_X\left[\eta(X)\ind[g^*(X)=0]+(1-\eta(X))\ind[g^*(X)=1]\right] -
+        \E_X\left[\eta(X)\ind[g(X)=0]+(1-\eta(X))\ind[g(X)=1]\right]    \\ 
+        &=
+        \E_X\left[\eta(X)\ind[g^*(X)=0]+(1-\eta(X))\ind[g^*(X)=1] -
+        \eta(X)\ind[g(X)=0]-(1-\eta(X))\ind[g(X)=1]\right]\label{eq:linear1}  \\
+        &= 
+        \E_X\left[\eta(X)\ind[g^*(X)=0] - (1-\eta(X))\ind[g(X)=1] + (1-\eta(X))\ind[g^*(X)=1] -
+        \eta(X)\ind[g(X)=0]\right]\label{eq:gX} \\
+        &= 
+        \E_X\left[|2\eta(X)-1|\ind[g^*(X)\ne g(X)]\right] \\
+        &=
+        2\E_X\left[\left|\eta(X)-\frac{1}{2}\right|\ind[g^*(X)\ne g(X)]\right]\label{eq:linear2}
+    \end{align}
+
+    Puede llegarse a la ecuación \ref{eq:linear1} por linealidad del valor esperado. 
+    Para llegar a la ecuación \ref{eq:gX}, vale la pena observar que se está agrupando cuando $g(X)=0$ y $g^*(X)=1$, y cuando $g(X)=1$ y $g^*(X)=0$ en la indicadora que $g^*(X)\ne g(X)$. Se toma el valor absoluto debido a que es irrespectivo de cuál clasificador sea, solamente la probabilidad es el converso.
+    Por último, se llega a la ecuación \ref{eq:linear2} nuevamente por linealidad del valor esperado, y con esto se llega
+    al resultado esperado, y concluye la primera demostración. $\blacksquare$

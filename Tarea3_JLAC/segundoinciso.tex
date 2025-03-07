@@ -1,0 +1,44 @@
+\subsection*{Segundo ejercicio}
+Para el segundo ejercicio, asumamos que $\tilde{\eta}$ es meramente un estimado
+de la probabilidad de que $Y$ sea 1 dado un valor de $X$, donde $X\in\mathcal{X}$. Dado el clasificador $g$, 
+entonces debe considerarse no solamente el error discutido en el ejercicio anterior, 
+sino que debido a que $\tilde{\eta}(X) \ne \eta(X)$. 
+Sustituyendo el resultado anterior en la desigualdad: 
+
+\begin{equation}
+    2\E\left[\left|\eta(X)-\frac{1}{2}\right|\ind[g^*(X)\ne g(X)]\right]\le 2\E\left[\eta(X)-\tilde{\eta}(X)\right]
+\end{equation}
+
+Si $g(X) = g^*(X)$ entonces el lado izquierdo de la ecuación es 0, por lo que 
+la desigualdad siempre se cumple. Entonces, solo debe revisarse en el caso que 
+sean distintos. Si esta desigualdad se cumple para todo $X\in \{\mathcal{X}:g(X)\ne g^*(X)\}$, 
+entonces se cumple para sus valores esperados. Para que $g(X)\ne g^*(X)$, debe 
+cumplirse que $g(X) = 0,\ g^*(X)=1$ o $g(X) = 0, g^*(X)=1$. Es decir, exclusivamente 
+debe ser uno u otro; en una notación más estándar: $\ind{g^*(X)\ne g(X)} = g^*(X)\oplus g(X)$, donde $\oplus$ se entiende como 
+una disyunción exclusiva. Para que esto ocurra, entonces necesariamente:
+
+\begin{equation}
+    \left(\eta(x)\le \frac{1}{2} \land \tilde{\eta}(x) > \frac{1}{2}\right)\oplus\left(\eta(x) > \frac{1}{2} \land \tilde{\eta}(x)\le \frac{1}{2}\right) 
+\end{equation}
+
+Suponiendo el primer caso, entonces se tiene la desigualdad: 
+
+\begin{align}
+    \left|\eta(x)-\frac{1}{2}\right| &\le |\eta(X)-\tilde{\eta}(X)| \\
+    \frac{1}{2}-\eta(x) &\le \tilde{\eta}(X) - \eta(X) \\
+    \frac{1}{2} &\le \tilde{\eta}(X)
+\end{align}
+
+Que es verdadero para todo $X\in \{\mathcal{X}:g(X)\ne g^*(X)\}$ dado el primer caso. 
+Resolviendo la desigualdad en el segundo caso: 
+\begin{align}
+    \left|\eta(x)-\frac{1}{2}\right| &\le |\eta(X)-\tilde{\eta}(X)| \\
+    \eta(x)-\frac{1}{2} &\le  \eta(X)-\tilde{\eta}(X) \\
+    \frac{1}{2} &\ge \tilde{\eta}(X)
+\end{align}
+Que también es verdadero para todo $X\in \{\mathcal{X}:g(X)\ne g^*(X)\}$ dado el segundo caso. 
+Debido a que la desigualdad se cumple, entonces se llega al resultado: 
+\begin{equation}
+    2\E\left[\left|\eta(X)-\frac{1}{2}\right|\ind[g^*(X)\ne g(X)]\right]\le 2\E\left[\eta(X)-\tilde{\eta}(X)\right]
+\end{equation}
+Y con esto concluye la demostración. $\blacksquare$

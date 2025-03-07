@@ -1,0 +1,92 @@
+\documentclass[a4paper,12pt]{amsart}
+
+\usepackage[spanish]{babel}
+\usepackage[style=ieee]{biblatex}
+\addbibresource{./references.bib}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2cm]{geometry}
+\usepackage[labelfont=bf,textfont=it]{caption,subcaption}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx,fancyhdr}
+\usepackage{csquotes}
+
+\author{José Luis Aguilar Charfén}
+\date{\today}
+\title{Objetivos de Desarrollo Sostenible: proyecto de Machine Learning}
+
+
+
+
+\begin{document}
+    \begin{abstract} % ! TODO
+        Este reporte muestra tanto un agrupamiento de los países de acuerdo a 
+        las métricas utilizadas para conocer el progreso en las 17 metas de 
+        sustentabilidad que proponen las Naciones unidas, como en estos mismos 
+        indicadores. A su vez, también se propone una manera de evaluar el progreso 
+        de los países en temas de sustentabilidad. 
+    \end{abstract}
+    \maketitle
+
+    \section{Introducción}
+
+    Los Objetivos de Desarrollo Sustentable son 17 metas que se acordaron en la 
+    Organización de las Naciones Unidas (ONU) en 2015 \cite{united_nations_development_programme_sustainable_nodate-1}
+    como una llamada a la acción para proteger al planeta y asegurar que para
+    2030 la población disfrute de paz y seguridad. 
+
+    Estos objetivos varían desde reducir la pobreza, hasta temas de salud, 
+    equidad de género, higiene, crecimiento económico, energía y cuidado al medio ambiente. 
+    Cuando se consideran todos los diferentes objetivos, entonces se construye el 
+    SDG Index Score, que califica el progreso de un país en las 17 metas. Para 
+    este reporte, se tomarán tanto las calificaciones otorgadas por la ONU, como
+    los datos a partir de los cuales se construyen las calificaciones en cada 
+    uno de los criterios.
+
+    Se mostrará en primera instancia un agrupamiento jerárquico para determinar 
+    qué países son más cercanos en ambos rubros discutidos, y posteriormente, se 
+    discutirá brevemente una manera de evaluar el progreso de los países en temas 
+    de sustentabilidad. 
+    		
+    \section{Metodología}
+
+    Los datos utilizados son obtenidos de \cite{united_nations_development_programme_sustainable_nodate}. 
+    El algoritmo utilizado puede dividirse en las siguientes partes: 
+
+    \begin{enumerate}
+        \item Escalamiento.
+        \item Imputación.
+        \item Reducción de dimensionalidad.
+        \item Agrupamiento.
+    \end{enumerate}
+
+    Debido a que no todos los países tienen un SDG Index Score, no se consideran
+    para entrenamiento ni validación ni prueba a estos países. Sin embargo, sí 
+    se predicen sus valores dadas las variables usadas para construir los primeros 
+    dos SDGs.
+
+    Para construir el modelo, se realiza un análisis de correlación de variables, 
+    y se observan tanto las distribuciones como las correlaciones con gráficos 
+    por pares de variables. Posteriormente, se transforman las variables con la 
+    transformación Yeo-Johnson \cite{yeo_new_2000}, preferida sobre la de Box y Cox por la presencia 
+    de valores 0 en las variables. Posteriormente, se imputan los valores con 
+    metodología de vecinos más cercanos \cite{beretta_nearest_2016}. Después, 
+    se codifican las regiones usadas para el SDG Index por un método one-hot. 
+    Una vez transformadas las variables de estas maneras, se comparan un modelo 
+    de mínimos cuadrados ordinarios, regresión Ridge, y Lasso, ajustando sus 
+    regularizaciones por validación cruzada, y se evalúa si se encuentra 
+    sobreajustado comparando el error cuadrático medio del conjunto de datos 
+    de entrenamiento con uno de prueba por separado, corriendo 20 veces el 
+    experimento y promediando los valores.
+
+    Las decisiones de construcción del modelo y justificaciones se discuten a
+    mayor profundidad en la sección de resultados y conclusión.
+
+    \section{Resultados y discusión}
+    
+
+    \section{Conclusiones}
+
+    \section{Referencias}
+    \printbibliography
+
+\end{document}

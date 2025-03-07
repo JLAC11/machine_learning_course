@@ -1,0 +1,1449 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage[spanish]{babel}
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Tarea 1: Machine Learning}
+    
+    
+    
+    \author{José Luis Aguilar}
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    Para la siguiente tarea, se utilizan las siguientes bibliotecas en
+Python, que se importan de una vez:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np} 
+\PY{k+kn}{import} \PY{n+nn}{statsmodels}\PY{n+nn}{.}\PY{n+nn}{api} \PY{k}{as} \PY{n+nn}{sm}
+\PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{preprocessing} \PY{k+kn}{import} \PY{n}{StandardScaler}\PY{p}{,} \PY{n}{PowerTransformer}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{linear\PYZus{}model} \PY{k+kn}{import} \PY{n}{Ridge}\PY{p}{,} \PY{n}{RidgeCV}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{model\PYZus{}selection} \PY{k+kn}{import} \PY{n}{KFold}
+\PY{k+kn}{from} \PY{n+nn}{sklearn}\PY{n+nn}{.}\PY{n+nn}{metrics} \PY{k+kn}{import} \PY{n}{mean\PYZus{}squared\PYZus{}error}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set\PYZus{}theme}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{ejercicio-1}{%
+\subsection{Ejercicio 1}\label{ejercicio-1}}
+
+Muestre que el estimador de regresión ridge se puede obtener por mínimos
+cuadrados usuales agregado \(p\) filas adicionales
+\(\sqrt{\lambda} \mathbf{I}_{pp}\) a la matriz \(\mathbf{X}\) y
+agregando \(p\) ceros al vector de respuestas \(\mathbf{Y}\).
+
+    \hypertarget{respuesta}{%
+\subsubsection{Respuesta}\label{respuesta}}
+
+Sea \(\mathbf{X}\) una matriz de tamaño \(n\times p\) de predictores,
+\(\mathbf{Y}\) un vector columna de tamaño \(n\) de variables de
+respuesta, \(\mathbf{X}_r\) la matriz \(\mathbf{X}\) con las filas
+adicionales con forma \(\sqrt{\lambda} \mathbf{I}_{pp}\) donde
+\(\lambda\) es un valor escalar, y \(\mathbf{Y}_r\) el vector columna de
+respuestas con \(p\) ceros añadidos, en ambos casos al final de la
+matriz o vector.
+
+Recordando que el estimador por regresión ridge se define de la
+siguiente manera:
+
+\[
+\hat{\beta}_R = \left(\mathbf{X}^T\mathbf{X} + \lambda \mathbf{I}\right)^{-1}\mathbf{X}^T\mathbf{Y}\tag{1}
+\]
+
+Y que el estimador de mínimos cuadrados tiene la siguiente forma:
+
+\[
+\hat{\beta} = \left(\mathbf{X}^T\mathbf{X}\right)^{-1}\mathbf{X}^T\mathbf{Y}\tag{2}
+\]
+
+Entonces, considerando las matrices \(\mathbf{X}_r\) y \(\mathbf{Y}_r\)
+y aplicando la regresión de mínimos cuadrados, se tiene lo siguiente:
+
+\[
+\hat{\beta}_r = \left(\mathbf{X}_r^T\mathbf{X}_r\right)^{-1}\mathbf{X}_r^T\mathbf{Y}_r\tag{3}
+\]
+
+Si se desglosan las matrices de la siguiente manera:
+
+\[
+\mathbf{X}_r &= \begin{bmatrix}\mathbf{X} \\ \sqrt{\lambda}\mathbf{I}_{pp}\end{bmatrix}; &
+\mathbf{Y}_r &= \begin{bmatrix}\mathbf{Y} \\ \mathbf{0}_{p}\end{bmatrix}
+\] Vale la pena recalcar que la notación \(\mathbf{0}_{p}\) indica un
+vector columna de ceros de tamaño p.~Sustituyendo en la ecuación \(3\):
+\$\$\begin{align*}
+\hat{\beta}_r &= \left(
+    \begin{bmatrix}\mathbf{X}^T & \sqrt{\lambda}\mathbf{I}_{pp}\end{bmatrix}
+    \begin{bmatrix}\mathbf{X} \\ \sqrt{\lambda}\mathbf{I}_{pp}\end{bmatrix}
+    \right)^{-1}
+    \begin{bmatrix}\mathbf{X}^T & \sqrt{\lambda}\mathbf{I}_{pp}\end{bmatrix}
+    \begin{bmatrix}\mathbf{Y} \\ \mathbf{0}_{p}\end{bmatrix} \\
+    
+    &=
+    \left(\mathbf{X}^T\mathbf{X} + \sqrt{\lambda}\mathbf{I}_{pp}\sqrt{\lambda}\mathbf{I}_{pp}\right)^{-1}
+    \begin{bmatrix}\mathbf{X}^T & \sqrt{\lambda}\mathbf{I}_{pp}\end{bmatrix}
+    \begin{bmatrix}\mathbf{Y} \\ \mathbf{0}_{p}\end{bmatrix} \\
+
+    &=
+    \left(\mathbf{X}^T\mathbf{X} + \sqrt{\lambda}^2\mathbf{I}_{pp}\right)^{-1}
+    \begin{bmatrix}\mathbf{X}^T & \sqrt{\lambda}\mathbf{I}_{pp}^2\end{bmatrix}
+    \begin{bmatrix}\mathbf{Y} \\ \mathbf{0}_{p}\end{bmatrix} \\
+
+    &=
+    \left(\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I}_{pp}\right)^{-1}
+    \left(\mathbf{X}^T \mathbf{Y} + \sqrt{\lambda}\mathbf{I}_{pp}\mathbf{0}_{p}\right) \\
+
+    \hat{\beta}_r &=
+    \left(\mathbf{X}^T\mathbf{X} + \lambda \mathbf{I}_{pp}\right)^{-1}\mathbf{X}^T\mathbf{Y}
+\end{align*}\[
+\]\therefore \hat{\beta}\_r = \hat{\beta}\_R\$\$
+
+Vale la pena recordarse que la matriz identidad es idempotente, por lo
+que puede hacerse el segundo paso mostrado. Con esto, puede observarse
+que el resultado obtenido es idéntico al mostrado en la ecuación \(1\).
+Con esto concluye la demostración. \(\blacksquare\)
+
+    \hypertarget{ejercicio-2}{%
+\subsection{Ejercicio 2}\label{ejercicio-2}}
+
+Los valores ajustados \(\widehat{\mathbf{Y}}\) por mínimos cuadrados
+usuales satisfacen la igualdad \(\widehat{\mathbf{Y}} = \mathbf{PY}\)
+donde \(\mathbf{PY}\) es la matriz de proyección ortogonal. Una
+consecuencia de este hecho es que los residuales
+\(\widehat{\epsilon} =\widehat{\mathbf{Y}} - \mathbf{Y}\) y el vector de
+respuestas \(Y\) son ortogonales. 1. Demuestre que la matriz
+\(\mathbf{P}_\lambda = \mathbf{X}\left(\mathbf{X}^T\mathbf{X} + \lambda \mathbf{I}\right)^{-1}\mathbf{X}^T\),
+asociada a la regresión ridge, no es una matriz de proyección para todo
+\(\lambda > 0\) 2. Demuestre que para cualquier \(\lambda > 0\) los
+valores ajustados \(\widehat{\mathbf{Y}}(\lambda)\) no son ortogonales
+con los residuales ridge
+\(\widehat{\epsilon} =\widehat{\mathbf{Y}}(\lambda) - \mathbf{Y}\).
+
+    \hypertarget{respuesta}{%
+\subsubsection{Respuesta}\label{respuesta}}
+
+Para el primer inciso, se sabe que una matriz de proyección debe ser
+idempotente. Como es una condición necesaria para ser una matriz de
+proyección, con que no cumpla esta condición para todo \(\lambda>0\)
+basta para demostrar que no es una matriz de proyección.
+
+En primera instancia, considerando la descomposición SVD de
+\(\mathbf{X} = UDV^T\), se obtiene el valor de \(\mathbf{P}_\lambda\):
+
+Considerando la descomposición SVD de \(\mathbf{X} = UDV^T\), se obtiene
+lo siguiente: \$\$\begin{align*}
+\mathbf{P}_\lambda &= 
+UDV^T\left(VD^TU^TUDV^T + \lambda \mathbf{I}\right)^{-1}VD^TU^T \\
+
+&= 
+UDV^T\left(VD^TDV^T + \lambda \mathbf{I}\right)^{-1}VD^TU^T\\
+
+&= 
+UDV^T\left(VD^TDV^T + \lambda VV^T\right)^{-1}VD^TU^T \\
+
+&= 
+UDV^T\left(D^TDV^T + \lambda V^T\right)^{-1}(V)^{-1}VD^TU^T \\
+
+&=
+UDV^T(V^T)^{-1}\left(D^TD + \lambda \mathbf{I}\right)^{-1}(V)^{-1}VD^TU^T \\ 
+
+&=
+UD\left(D^TD + \lambda \mathbf{I}\right)^{-1}D^TU^T\tag{4}
+\end{align*}\$\$
+
+Si esta matriz fuera idempotente, entonces su traza sería equivalente a
+su rango. Esta demostración se omite, pero puede obtenerse relativamente
+fácil de encontrar los eigenvalores de una matriz idempotente. Debido a
+que debe cumplirse para una matriz idempotente:
+\[\mathrm{tr}(\mathbf{P}) = \mathrm{rank}(\mathbf{P})\] Puede usarse
+como criterio para determinar si \(\mathbf{P}_\lambda\) es una matriz de
+proyección. Obteniendo la traza del resultado mostrado en \(4\):
+\$\$\begin{align*}
+\mathrm{tr}(\mathbf{P}_\lambda) &= \mathrm{tr}\left(UD\left(D^TD + \lambda \mathbf{I}\right)^{-1}D^TU^T\right) \\
+
+&= 
+\mathrm{tr}\left(D\left(D^TD + \lambda \mathbf{I}\right)^{-1}D^T\right)
+\end{align*}\[
+Debido a que $D$ es una matriz diagonal, entonces puede obtenerse la traza sumando tal cual cada uno de los valores de la siguiente manera:
+\]\mathrm{tr}(\mathbf{P}\emph{\lambda) = \sum}\{i=1\}\^{}p
+\frac{d_i^2}{d_i^2+\lambda}\[
+Donde $i$ representa cada uno de los valores singulares. Puede observarse que 
+para todo $\lambda>0$ el $i$-ésimo elemento de esta suma es menor que 1, con la siguiente desigualdad:
+\]\frac{d_i^2}{d_i^2+\lambda} \textless{} 1;\quad d\_i\^{}2 \textless{}
+d\_i\^{}2 + \lambda\[
+Debido a que la suma de cada uno de estos elementos es menor que 1, si se suman todos los elementos:
+\]\mathrm{tr}(\mathbf{P}\_\lambda)\textless{}\mathrm{rank}(D)\$\$ Esto
+puede estarse seguro ya que el número de valores singulares es igual al
+rango de la matriz \(D\). Con esto concluye la demostración del primer
+inciso. \(\blacksquare\)
+
+Para el segundo inciso, conviene recordar que si un par de vectores son
+ortogonales entonces el producto punto (o la proyección,
+alternativamente) en otro es cero. Alternativamente, sean \(v\) y \(w\)
+dos vectores de la misma dimensión que además son ortogonales, entonces
+se cumple la siguiente igualdad: \[u\cdot v = u^Tv = v^Tu = 0\] Donde
+\((\cdot)\) representa el producto punto. Entonces, sean los residuales
+de ridge \(\mathbf{\widehat{Y}-Y} = \widehat{\epsilon}\), y
+\(\mathbf{\widehat{Y} = \mathbf{P}_\lambda Y}\). Entonces, la proyección
+de un vector en el otro es dado por la siguiente ecuación: \$\$
+\begin{gather*}
+    (\mathbf{P}_\lambda \mathbf{Y})^T \left(\mathbf{\widehat{Y}-Y}\right) \\
+
+    \mathbf{Y}^T\mathbf{P}_\lambda^T \left(\mathbf{\mathbf{P}_\lambda \mathbf{Y}-Y}\right) \\
+
+    \mathbf{Y}^T\mathbf{P}_\lambda^T \left(\mathbf{\mathbf{P}_\lambda -I}\right)\mathbf{Y} \\
+
+    \mathbf{Y}^T \left(\mathbf{P}_\lambda^T\mathbf{\mathbf{P}_\lambda -\mathbf{P}_\lambda^T}\right)\mathbf{Y}
+    \end{gather*} \[
+Recordando que $\mathbf{P}_\lambda = \mathbf{X}\left(\mathbf{X}^T\mathbf{X} + \lambda \mathbf{I}\right)^{-1}\mathbf{X}^T$, y sea $\mathbf{A} = \left(\mathbf{X}^T\mathbf{X} + \lambda \mathbf{I}\right)^{-1}$, entonces:
+\]\mathbf{P}\_\lambda = \mathbf{X}\mathbf{A}\mathbf{X}\^{}T\[
+\] \begin{gather*}
+\mathbf{Y}^T \left((\mathbf{X}\mathbf{A}\mathbf{X}^T)^T\mathbf{X}\mathbf{A}\mathbf{X}^T -\mathbf{X}\mathbf{A}\mathbf{X}^T\right)\mathbf{Y} \\
+
+\mathbf{Y}^T \left(\mathbf{X}\mathbf{A}^T\mathbf{X}^T\mathbf{X}\mathbf{A}\mathbf{X}^T -\mathbf{X}\mathbf{A}\mathbf{X}^T\right)\mathbf{Y}\tag{5}
+\end{gather*} \[
+Transponiendo $\mathbf{A}$:
+\]\mathbf{A}\^{}T = \left(\left(\mathbf{X}\^{}T\mathbf{X} +
+\lambda \mathbf{I}\right)\textsuperscript{\{-1\}\right)}T\[
+Sabiendo que es invertible:
+\]\begin{align*}
+\mathbf{A}^T &= \left(\left(\mathbf{X}^T\mathbf{X} + \lambda \mathbf{I}\right)^T\right){-1} \\
+\mathbf{A}^T &= \left(\left((\mathbf{X}^T\mathbf{X})^T + (\lambda \mathbf{I})?T\right)\right){-1} \\
+\mathbf{A}^T &= \left(\left(\mathbf{X}^T\mathbf{X} + \lambda \mathbf{I}\right)\right){-1} \\
+\mathbf{A}^T &= \mathbf{A}
+\end{align*}\$\$
+
+Por lo que, sustituyendo en el resultado en \(5\):
+\[\mathbf{Y}^T \left(\mathbf{X}\mathbf{A}\mathbf{X}^T\mathbf{X}\mathbf{A}\mathbf{X}^T -\mathbf{X}\mathbf{A}\mathbf{X}^T\right)\mathbf{Y}\]
+\[\mathbf{Y}^T \left(\mathbf{P^2}_\lambda -\mathbf{P}_\lambda\right)\mathbf{Y}\]
+
+En el inciso anterior se demostró que la matriz \(\mathbf{P}_\lambda\)
+no es idempotente, por lo que el término
+\(\mathbf{P^2}_\lambda -\mathbf{P}_\lambda\) es distinto a
+\(\mathbf{0}\). Entonces, no se cumple la ortogonalidad de las
+predicciones contra los residuales estimados de Ridge, ya que este
+resultado es distinto de cero para todo \(\mathbf{Y}\) que sea distinto
+al vector 0, y con esto concluye la demostración.\(\blacksquare\)
+
+Vale la pena mencionarse que en el ejercicio 1 de la tarea se ve que
+puede hacerse una expresión de la regresión Ridge equivalente a mínimos
+cuadrados, donde efectivamente se cumple la ortogonalidad de la matriz.
+Sin embargo, debido a que se incluyeron filas adicionales tanto en las
+variables regresoras como en la de respuesta, corresponderían a
+observaciones que no existieron, por lo que no tiene por qué cumplirse
+la ortogonalidad con los datos reales (es decir, aquellos que no se les
+``agregaron'' otros valores).
+
+    \hypertarget{ejercicio-3}{%
+\subsection{Ejercicio 3}\label{ejercicio-3}}
+
+Algunas veces se tiende a pensar que se puede detectar una matriz mal
+condicionada al observar valores pequeños en la diagonal de la matriz. Y
+que, por lo tanto, una matriz sin valores pequeños en la diagonal estará
+bien condicionada. Sin embargo, esto no es cierto. Para ilustrar este
+hecho, considere las matrices:
+
+\[
+\begin{bmatrix}
+0.501 & -1    & 0      & ...   & 0  \\
+0     & 0.502 & -1     &       & 0  \\
+\vdots&       & \ddots & \ddots &  \\
+0     & 0     & 0      & 0.599 & -1 \\
+0     & 0     & 0      & 0     & 0.600
+\end{bmatrix} 
+\quad \mathrm{y} \quad 
+\begin{bmatrix}
+1 & -1 & -1     & ...  & -1  \\
+0 & 1  & -1     &      & -1 \\
+\vdots &   & \ddots & \ddots  & \\
+0 & 0  & 0      & 1    & -1 \\
+0 & 0  & 0      & 0    & 1
+\end{bmatrix}
+\]
+
+Halle el número de condición de dichas matrices, usando este número de
+condición se puede observar que ambas matrices están mal condicionadas,
+aunque ninguna tiene elementos pequeños en la diagonal.
+
+    \hypertarget{respuesta}{%
+\subsubsection{Respuesta}\label{respuesta}}
+
+Sea \(A\) la primera matriz y \(B\) la segunda matriz mostrada. Debido a
+que no se especifica la dimensión de B, se asume un tamaño arbitrario.
+Para la matriz \(A\) su tamaño sí es determinado por lo que puede
+calcularse directamente el número de condición, con el siguiente script
+\footnote{No todos los scripts de Python mostrados en esta tarea se
+  escriben para ser corridos individualmente y encontrarse encapsulados.
+  Si se corren secuencialmente, entonces no deben existir errores. Se
+  hace de esta manera para que cuando se refiera a un ejemplo, pueda
+  describirse inmediatamente al código al que se refiere.} de Python:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{A} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mf}{0.501}\PY{p}{,}\PY{l+m+mf}{0.6001}\PY{p}{,}\PY{l+m+mf}{0.001}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{l+m+mi}{99}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{cond\PYZus{}A} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{cond}\PY{p}{(}\PY{n}{A}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Número de condición de la matriz A: }\PY{l+s+si}{\PYZob{}}\PY{n}{cond\PYZus{}A}\PY{l+s+si}{:}\PY{l+s+s1}{.4e}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Número de condición de la matriz A: 2.2097e+26
+    \end{Verbatim}
+
+    Para la matriz B se propone graficar el número de condición contra la
+dimensión de la matriz.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{maxdim} \PY{o}{=} \PY{l+m+mi}{50}
+\PY{n}{ncond} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{maxdim}\PY{p}{)}\PY{p}{:}
+    \PY{n}{ones} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+    \PY{n}{B} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{triu}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{ones}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{+}\PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{n}{ones}\PY{p}{)}
+    \PY{n}{ncond}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{cond}\PY{p}{(}\PY{n}{B}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{yscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{which}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{minor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{ncond}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Dimensión de la matriz}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Número de condición de la matriz}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Número de condición de la matriz B contra dimensión}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Número de condición de la matriz B contra dimensión')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Tarea1_JLAC_files/Tarea1_JLAC_10_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Puede verse que el número de condición de la matriz \(B\) crece
+rápidamente contra la dimensión de la matriz.
+
+    \hypertarget{ejercicio-4}{%
+\subsection{Ejercicio 4}\label{ejercicio-4}}
+
+Considere la matriz
+\(\mathbf{A} = \begin{bmatrix}1 & \alpha \\ \alpha & 1\end{bmatrix}\) ,
+halle su número de condición, \(\kappa(\mathbf{A})\), y demuestre que
+\(\lim_{\alpha\rightarrow1}\kappa(\mathbf{A}) = \infty\). Por otro lado,
+considere la matriz
+\(\mathbf{B} = \begin{bmatrix} \alpha & 0\\ 0& \alpha\end{bmatrix}\), se
+podría pensar que cuando \(\alpha\rightarrow0\), la matriz B está mal
+condicionada. Halle el número de condición de la matriz \(\mathbf{B}\),
+\(\kappa(\mathbf{B})\), y calcule
+\(\lim_{\alpha\rightarrow0}\kappa(\mathbf{B})\), ¿es cierto que cuando
+\(\alpha\rightarrow0\), \(\kappa(\mathbf{B})\) se vuelve una matriz mal
+condicionada?
+
+    \hypertarget{respuesta}{%
+\subsubsection{Respuesta}\label{respuesta}}
+
+Para encontrar el número de condición de \(\mathbf{A}\), se aprovecha
+que es una matriz normal. Para demostrar que es normal, basta con ver
+que \(\mathbf{A}= \mathbf{A}^T\), por lo que
+\(\mathbf{A}\mathbf{A}^T = \mathbf{A}^T\mathbf{A}\). Debido a que es una
+matriz normal con entradas reales, su número de condición puede
+calcularse de la siguiente manera:
+\[\kappa(\mathbf{A}) = \left|\frac{\lambda_{\max}(\mathbf{A})}{\lambda_{\min}(\mathbf{A})}\right|\]
+
+Entonces, calculando los eigenvalores de la matriz \(\mathbf{A}\)
+resolviendo su polinomio característico: \[\begin{align*}
+(1-\lambda)^2-\alpha^2 &= 0 \\
+(1-\lambda+\alpha)(1-\lambda-\alpha) &= 0
+\end{align*}\] Debido a que solamente hay dos eigenvalores, el mayor en
+magnitud corresponde al máximo, y el menor al mínimo. Por lo tanto:
+\[\lambda = \left\{1+\alpha,1-\alpha\right\}\] Para demostrar que el
+límite tiende al infinito, entonces para todo número \(N>1\)\footnote{Se
+  elige mayor que 1 para evitar indeterminaciones en el caso que
+  \(\alpha = 1+\delta\).} existe un \(\delta>0\) tal que para todo
+\(\alpha\):
+\[0<|\alpha-1|<\delta \implies \kappa(\mathbf{A}) = \left|\frac{\lambda_{\max}(\mathbf{A})}{\lambda_{\min}(\mathbf{A})}\right| > N \]
+Debido a que \(\alpha\rightarrow1\), \(1+\alpha>1-\alpha\). Entonces,
+sea \(\alpha = 1+\delta\): \[\begin{align*}
+\left|\frac{1+\alpha}{1-\alpha}\right| &> N \\
+\left|\frac{1+1+\delta}{1-1-\delta}\right| &> N \\
+\left|\frac{2+\delta}{-\delta}\right| &> N \\
+\frac{2}{\delta}+1 &>N \\
+\frac{2}{N-1} &> \delta
+\end{align*}\] El caso en que \(\alpha = 1-\delta\): \[\begin{align*}
+\left|\frac{1+\alpha}{1-\alpha}\right| &> N \\
+\left|\frac{1+1-\delta}{1-1+\delta}\right| &> N \\
+\left|\frac{2-\delta}{\delta}\right| &> N \\
+\frac{2}{\delta}-1 &>N \\
+\frac{2}{N+1} &> \delta \\
+\frac{2}{N-1} &> \frac{2}{N+1}
+\end{align*}\]
+
+Por lo que con elegir un \(\delta \in (0,\frac{2}{N+1})\) se cumple la
+desigualdad, y se demuestra que tiende al infinito. \(\blacksquare\)
+
+En el caso de la matriz \(\mathbf{B}\), se sigue un procedimiento muy
+similar. \(\mathbf{B} = \alpha\mathbb{I}\), por lo que sus eigenvalores
+serán \(\alpha\) en ambos casos. De cualquier forma, calculando su
+polinomio característico:
+\[(\alpha-\lambda)^2 = 0\implies \lambda = \alpha\] Entonces, para todo
+\(\alpha \ne 0\), debido a que ambos eigenvalores son iguales, y
+\(\mathbf{B}\) es una matriz normal, entonces se tiene que:
+\[\kappa(\mathbf{B}) = \frac{\alpha}{\alpha} = 1;\quad {\alpha\ne0}\]
+Entonces, \(\lim_{\alpha\rightarrow0}\kappa(\mathbf{B}) =1\). La
+demostración es trivial por lo que no se realiza --con elegir cualquier
+\(\delta>0\) se satisface que \(1-\kappa(\mathbf{B})<\epsilon\).
+
+    \hypertarget{ejercicio-5}{%
+\subsection{Ejercicio 5}\label{ejercicio-5}}
+
+Sea \(X\) un vector aleatorio \(n\times1\) y sea \(\mathbb{A}\) una
+matriz \(n\times n\). Si \(\mathbb{E}(X) = \mu\) y
+\(\mathbb{V}(X) = \Sigma\), demuestre que:
+\[\mathbb{E}(X^T\mathbf{A}X) = \mathrm{tr}(\mathbf{A}\Sigma)+\mu^T\mathbf{A}\mu\]
+
+    \hypertarget{respuesta}{%
+\subsubsection{Respuesta}\label{respuesta}}
+
+\[\mathbb{E}(X^T\mathbf{A}X)\] Por linealidad de una transformación
+lineal:
+\[X^T\mathbf{A}X = \left(X-\mu\right)^T\mathbf{A}\left(X-\mu\right) + \mu^T\mathbf{A}\mu\]
+Por linealidad del valor esperado: \[\begin{align*}
+\mathbb{E}(\left(X-\mu\right)^T\mathbf{A}\left(X-\mu\right) + \mu^T\mathbf{A}\mu) &= \mathbb{E}(\left(X-\mu\right)^T\mathbf{A}\left(X-\mu\right))+ \mathbb{E}(\mu^T\mathbf{A}\mu) \\
+&= \mathbb{E}(\left(X-\mu\right)^T\mathbf{A}\left(X-\mu\right)) + \mu^T\mathbf{A}\mu
+\end{align*}\]
+
+Calculando la traza de la expresión:
+\[\mathrm{tr}(\mathbb{E}(X^T\mathbf{A}X)) = \mathbb{E}(X^T\mathbf{A}X) = \mathrm{tr}(\mathbb{E}(\left(X-\mu\right)^T\mathbf{A}\left(X-\mu\right)) + \mu^T\mathbf{A}\mu)\]
+Por linealidad de la traza: \[\begin{align*}
+\mathbb{E}(X^T\mathbf{A}X) &= \mathrm{tr}(\mathbb{E}(\left(X-\mu\right)^T\mathbf{A}\left(X-\mu\right))) + \mathrm{tr}(\mu^T\mathbf{A}\mu) \\
+&= \mathrm{tr}(\mathbb{E}(\left(X-\mu\right)^T\mathbf{A}\left(X-\mu\right))) + \mu^T\mathbf{A}\mu\tag{5}
+\end{align*}\] Por la propiedad cíclica de la traza:
+\[\mathrm{tr}(\mathbb{E}(\left(X-\mu\right)^T\mathbf{A}\left(X-\mu\right))) = \mathrm{tr}(\mathbb{E}(\mathbf{A}\left(X-\mu\right)\left(X-\mu\right)^T))\]
+Por linealidad del valor esperado:
+\[\mathrm{tr}(\mathbb{E}(\mathbf{A}\left(X-\mu\right)\left(X-\mu\right)^T)) = \mathrm{tr}(\mathbf{A}\mathbb{E}(\left(X-\mu\right)\left(X-\mu\right)^T))\]
+Recordando la definición de la covarianza:
+\[\mathbb{V}(X) = \Sigma = \mathbb{E}(\left(X-\mu\right)\left(X-\mu\right)^T)\]
+Sustituyendo:
+\[\mathrm{tr}(\mathbb{E}(\mathbf{A}\left(X-\mu\right)\left(X-\mu\right)^T)) = \mathrm{tr}(A\Sigma)\]
+Y sustituyendo nuevamente en \(5\):
+\[\mathbb{E}(X^T\mathbf{A}X) = \mathrm{tr}(A\Sigma) + \mu^T\mathbf{A}\mu\]
+Y con esto se termina la demostración. \(\blacksquare\)
+
+    \hypertarget{ejercicio-6}{%
+\subsection{Ejercicio 6}\label{ejercicio-6}}
+
+La siguiente tabla muestra datos relacionados con las necesidades para
+el trabajo hospitalario, provenientes de 17 hospitales. La variable
+\(V_1\) representa la carga promedio diaria de pacientes, \(V_2\) denota
+el número mensual de servicios de rayos X, \(V_3\) denota el número de
+días-cama de ocupación mensual, \(V_4\) denota la población elegible en
+el área (dividida por 1000), \(V_5\) denota la longitud promedio de
+permanencia de los pacientes, en días. La variable respuesta \(W\) es el
+número de horas de trabajo durante el mes.
+
+Sea \(\mathbf{X}\) la matriz formada por las variables
+\(V_1,\ V_2,\ V_3,\ V_4\) y \(V_5\). Haga lo siguiente: \#\#\#\#
+Análisis de colinealidad 1. Realice los gráficos de dispersión de la
+variable \(W\) con cada una de las variables de \(\mathbf{X}\), así como
+los gráficos de dispersión entre las variables de \(\mathbf{X}\).
+También evalúe los coeficientes de correlación entre la variable
+respuesta y cada una de las cinco variables regresoras. 2. Calcule el
+número de condición de la matriz \(\mathbf{X}\) y su matriz de
+correlación. ¿Qué evidencia hay de la presencia de multicolinealidad en
+los datos de este problema? 3. ¿Cómo cambia el número de condición al
+centrar y escalar la matriz \(\mathbf{X}\)? Sea \(\mathbf{X}_c\) la
+matriz \(\mathbf{X}\) centrada y escalada. 4. Calcule e interprete los
+factores de inflación de la varianza (VIF) para las cinco variables
+regresoras, considerando la matriz \(\mathbf{X}_c\). 5. Calcule los
+índices de condición de la matriz \(\mathbf{X}_c\), realice la
+descomposición de la varianza de los parámetros de regresión. Presente
+sus resultados en la llamada matriz \(\Pi\) e interprételos. \#\#\#\#
+Regresión ridge 1. Una manera de estimar el valor óptimo del parámetro
+ridge es la siguiente:
+\[\hat{\lambda} = p\frac{\hat{\sigma}^2}{\hat{\beta}^T\hat{\beta}}\]
+Donde \(\hat{\beta}\) son los parámetros de regresión estimados por
+mínimos cuadrados ordinarios y \(\hat{\sigma}^2\) es un estimador de la
+varianza de los errores independientes del modelo; por ejemplo
+\(\hat{\sigma}^2 = \frac{1}{n-p}SSR\), donde \(SSR\) es la suma de
+cuadrados de residuales. Calcule este estimador del parámetro ridge.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Determine el valor del parámetro ridge utilizando el método de
+  validación cruzada.
+\item
+  Estime para ambos valores de \(\lambda\), obtenidos en los incisos
+  anteriores, los coeficientes de regresión ridge \(\hat{\beta}_R\), así
+  como los valores ajustados de la variable respuesta
+  \(\hat{\mathbf{Y}}\).
+\item
+  Presente en dos gráficos los puntos \((Y_i,\hat{Y}_i)\) para los dos
+  valores de \(\lambda\), agregue en las gráficas la línea identidad.
+  Interprete la gráfica.
+\item
+  Grafique la traza de ridge y dibuje con dos líneas vertiales los
+  valores estimados de \(\lambda\).
+\item
+  Los factores de inflación de varianza usuales se pueden definir como:
+  \[VIF_j=n(\mathbf{X}_c^T\mathbf{X}_c)^{-1}_{jj},j=\{1,2,...,p\}\]
+  Similarmente, los factores de inflación de varianza ridge se pueden
+  definir como:
+  \[VIF_j=n\left[(\mathbf{X}_c^T\mathbf{X}_c+\lambda I)^{-1}\mathbf{X}_c^T\mathbf{X}_c(\mathbf{X}_c^T\mathbf{X}_c+\lambda I)^{-1}\right]_{jj}\]
+  Calcule estos factores de inflación de varianza.
+\item
+  Comente sus resultados.
+\end{enumerate}
+
+    \hypertarget{respuestas}{%
+\subsubsection{Respuestas}\label{respuestas}}
+
+Debido a la naturaleza del ejercicio 6, se realizarán los fragmentos de
+código relevantes en cada una de las respuestas. Se reconoce que si se
+corren individualmente los segmentos no necesariamente serán correctos;
+sin embargo, si se corren secuencialmente, se asegura que todos
+funcionen. A continuación se cargan los datos.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Datos}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{o}{=} 
+    \PY{p}{\PYZob{}}
+        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{V1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{15.57}\PY{p}{,}\PY{l+m+mf}{44.02}\PY{p}{,}\PY{l+m+mf}{20.42}\PY{p}{,}\PY{l+m+mf}{18.74}\PY{p}{,}\PY{l+m+mf}{49.2}\PY{p}{,}\PY{l+m+mf}{44.92}\PY{p}{,}\PY{l+m+mf}{55.48}\PY{p}{,}\PY{l+m+mf}{59.28}\PY{p}{,}\PY{l+m+mf}{94.39}\PY{p}{,}\PY{l+m+mf}{128.02}\PY{p}{,}\PY{l+m+mi}{96}\PY{p}{,}\PY{l+m+mf}{131.42}\PY{p}{,}\PY{l+m+mf}{127.21}\PY{p}{,}\PY{l+m+mf}{252.9}\PY{p}{,}\PY{l+m+mf}{409.2}\PY{p}{,}\PY{l+m+mf}{463.7}\PY{p}{,}\PY{l+m+mf}{510.22}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{V2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mi}{2463}\PY{p}{,}\PY{l+m+mi}{2048}\PY{p}{,}\PY{l+m+mi}{3940}\PY{p}{,}\PY{l+m+mi}{6505}\PY{p}{,}\PY{l+m+mi}{5723}\PY{p}{,}\PY{l+m+mi}{11520}\PY{p}{,}\PY{l+m+mi}{5779}\PY{p}{,}\PY{l+m+mi}{5969}\PY{p}{,}\PY{l+m+mi}{8461}\PY{p}{,}\PY{l+m+mi}{20106}\PY{p}{,}\PY{l+m+mi}{13313}\PY{p}{,}\PY{l+m+mi}{10771}\PY{p}{,}\PY{l+m+mi}{15543}\PY{p}{,}\PY{l+m+mi}{36194}\PY{p}{,}\PY{l+m+mi}{34703}\PY{p}{,}\PY{l+m+mi}{39204}\PY{p}{,}\PY{l+m+mi}{86533}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{V3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{472.82}\PY{p}{,}\PY{l+m+mf}{1339.75}\PY{p}{,}\PY{l+m+mf}{620.25}\PY{p}{,}\PY{l+m+mf}{568.33}\PY{p}{,}\PY{l+m+mf}{1497.6}\PY{p}{,}\PY{l+m+mf}{1365.83}\PY{p}{,}\PY{l+m+mi}{1687}\PY{p}{,}\PY{l+m+mf}{1639.92}\PY{p}{,}\PY{l+m+mf}{2872.33}\PY{p}{,}\PY{l+m+mf}{3655.08}\PY{p}{,}\PY{l+m+mi}{2912}\PY{p}{,}\PY{l+m+mi}{3921}\PY{p}{,}\PY{l+m+mf}{3865.67}\PY{p}{,}\PY{l+m+mf}{7684.1}\PY{p}{,}\PY{l+m+mf}{12246.33}\PY{p}{,}\PY{l+m+mf}{14098.4}\PY{p}{,}\PY{l+m+mi}{15524}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{V4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mi}{18}\PY{p}{,}\PY{l+m+mf}{9.5}\PY{p}{,}\PY{l+m+mf}{12.8}\PY{p}{,}\PY{l+m+mf}{36.7}\PY{p}{,}\PY{l+m+mf}{35.7}\PY{p}{,}\PY{l+m+mi}{24}\PY{p}{,}\PY{l+m+mf}{43.3}\PY{p}{,}\PY{l+m+mf}{46.7}\PY{p}{,}\PY{l+m+mf}{78.7}\PY{p}{,}\PY{l+m+mf}{180.5}\PY{p}{,}\PY{l+m+mf}{60.9}\PY{p}{,}\PY{l+m+mf}{103.7}\PY{p}{,}\PY{l+m+mf}{126.8}\PY{p}{,}\PY{l+m+mf}{157.7}\PY{p}{,}\PY{l+m+mf}{169.4}\PY{p}{,}\PY{l+m+mf}{331.4}\PY{p}{,}\PY{l+m+mf}{371.6}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{V5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{4.45}\PY{p}{,}\PY{l+m+mf}{6.92}\PY{p}{,}\PY{l+m+mf}{4.28}\PY{p}{,}\PY{l+m+mf}{3.9}\PY{p}{,}\PY{l+m+mf}{5.5}\PY{p}{,}\PY{l+m+mf}{4.6}\PY{p}{,}\PY{l+m+mf}{5.62}\PY{p}{,}\PY{l+m+mf}{5.15}\PY{p}{,}\PY{l+m+mf}{6.18}\PY{p}{,}\PY{l+m+mf}{6.15}\PY{p}{,}\PY{l+m+mf}{5.88}\PY{p}{,}\PY{l+m+mf}{4.88}\PY{p}{,}\PY{l+m+mf}{5.5}\PY{p}{,}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mf}{10.78}\PY{p}{,}\PY{l+m+mf}{7.05}\PY{p}{,}\PY{l+m+mf}{6.35}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{p}{[}\PY{l+m+mf}{556.52}\PY{p}{,}\PY{l+m+mf}{696.82}\PY{p}{,}\PY{l+m+mf}{1933.15}\PY{p}{,}\PY{l+m+mf}{1603.62}\PY{p}{,}\PY{l+m+mf}{1611.37}\PY{p}{,}\PY{l+m+mf}{1613.27}\PY{p}{,}\PY{l+m+mf}{1854.17}\PY{p}{,}\PY{l+m+mf}{2160.55}\PY{p}{,}\PY{l+m+mf}{2305.58}\PY{p}{,}\PY{l+m+mf}{3503.93}\PY{p}{,}\PY{l+m+mf}{3571.89}\PY{p}{,}\PY{l+m+mf}{3741.4}\PY{p}{,}\PY{l+m+mf}{4026.52}\PY{p}{,}\PY{l+m+mf}{10343.81}\PY{p}{,}\PY{l+m+mf}{11732.17}\PY{p}{,}\PY{l+m+mf}{15414.94}\PY{p}{,}\PY{l+m+mf}{18854.45}\PY{p}{]}
+    \PY{p}{\PYZcb{}}
+\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Exploración inicial de datos}
+\PY{n}{display}\PY{p}{(}\PY{n}{df}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+        V1     V2        V3     V4     V5         W
+0    15.57   2463    472.82   18.0   4.45    556.52
+1    44.02   2048   1339.75    9.5   6.92    696.82
+2    20.42   3940    620.25   12.8   4.28   1933.15
+3    18.74   6505    568.33   36.7   3.90   1603.62
+4    49.20   5723   1497.60   35.7   5.50   1611.37
+5    44.92  11520   1365.83   24.0   4.60   1613.27
+6    55.48   5779   1687.00   43.3   5.62   1854.17
+7    59.28   5969   1639.92   46.7   5.15   2160.55
+8    94.39   8461   2872.33   78.7   6.18   2305.58
+9   128.02  20106   3655.08  180.5   6.15   3503.93
+10   96.00  13313   2912.00   60.9   5.88   3571.89
+11  131.42  10771   3921.00  103.7   4.88   3741.40
+12  127.21  15543   3865.67  126.8   5.50   4026.52
+13  252.90  36194   7684.10  157.7   7.00  10343.81
+14  409.20  34703  12246.33  169.4  10.78  11732.17
+15  463.70  39204  14098.40  331.4   7.05  15414.94
+16  510.22  86533  15524.00  371.6   6.35  18854.45
+    \end{Verbatim}
+
+    
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+               V1            V2            V3          V4         V5  \textbackslash{}
+count   17.000000     17.000000     17.000000   17.000000  17.000000   
+mean   148.275882  18163.235294   4468.847647  106.317647   5.893529   
+std    161.038581  21278.110550   4886.552611  107.954153   1.584073   
+min     15.570000   2048.000000    472.820000    9.500000   3.900000   
+25\%     44.920000   5779.000000   1365.830000   35.700000   4.880000   
+50\%     94.390000  10771.000000   2872.330000   60.900000   5.620000   
+75\%    131.420000  20106.000000   3921.000000  157.700000   6.350000   
+max    510.220000  86533.000000  15524.000000  371.600000  10.780000   
+
+                  W  
+count     17.000000  
+mean    5030.832941  
+std     5525.298021  
+min      556.520000  
+25\%     1613.270000  
+50\%     2305.580000  
+75\%     4026.520000  
+max    18854.450000  
+    \end{Verbatim}
+
+    
+    \hypertarget{exploraciuxf3n-de-datos}{%
+\paragraph{Exploración de datos}\label{exploraciuxf3n-de-datos}}
+
+Previo a analizar los datos, conviene notar algunas observaciones que
+pueden resultar relevantes para el estudio de los datos. No existen
+datos faltantes, por lo que no se requieren técnicas para lidiar con
+ellos. Puede observarse que la magnitud de varias variables, por ejemplo
+entre \(V_3\) y \(V_4\) son muy distintas, lo cual de antemano puede
+sugerir problemas de condicionamiento cuando se haga un modelo lineal.
+Adicionalmente, del análisis de estadísticas descriptivas, puede
+observarse que el valor máximo es mucho mayor que el valor inicial del
+cuarto cuartil, lo que puede sugerir que las distribuciones de los
+puntos observados tengan colas muy largas. \#\#\#\# Análisis de
+colinealidad
+
+\hypertarget{inciso-1.}{%
+\subparagraph{Inciso 1.}\label{inciso-1.}}
+
+En los gráficos de dispersión entre variables puede observarse que, en
+general, existe una fuerte correlación entre las variables predictoras,
+siendo prácticamente perfecta entre \(V_1\) y \(V_3\). Observando que la
+variable \(V_1\) representa la carga \emph{promedio} diaria de
+pacientes, y \(V_3\) el número de días-cama de ocupación mensual, hace
+sentido que tengan una relación muy fuerte, pues ambas dependen de la
+cantidad de pacientes que hubieron. La gran diferencia entre ellos es
+que un paciente puede salir en menos de un día. Esto quiere decir que si
+se divide el número de días-cama entre la carga promedio de pacientes
+diaria, se esperaría que tuvieran una relación cercana a 30, pero nunca
+mayor a 31 (pues no hay meses de más de 31 días). Tampoco resulta de
+sorprender que esté relacionado el número de pacientes con el número de
+solicitudes de rayos X mensualmente (\(V_2\)), ni con la población
+elegible.
+
+Vale la pena notarse que las distribuciones de las variables,
+efectivamente, no muestran un comportamiento normal, por lo que puede
+valer la pena realizar una transformación{[}\^{}2{]} de los datos para
+ver si después de transformarlos muestran este comportamiento normal.
+Esto se discutirá al final de la tarea, tras haberse resuelto todos los
+incisos.
+
+El código utilizado se muestra a continuación. {[}\^{}2{]}: Se propone
+una transformación Box-Cox, pues todos los valores son estrictamente
+positivos.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Análisis de colinealidad.}
+\PY{c+c1}{\PYZsh{}\PYZsh{} Inciso 1.}
+\PY{n}{sns}\PY{o}{.}\PY{n}{pairplot}\PY{p}{(}\PY{n}{df}\PY{p}{,}\PY{n}{corner}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{reg}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gráficos de dispersión para el conjunto de datos.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Blues}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Matriz de correlación de variables \PYZdl{}V\PYZus{}1\PYZdl{} a \PYZdl{}V\PYZus{}5\PYZdl{} y \PYZdl{}W\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+\PY{n}{sns}\PY{o}{.}\PY{n}{kdeplot}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{V3}\PY{o}{/}\PY{n}{df}\PY{o}{.}\PY{n}{V1}\PY{p}{,}\PY{n}{bw\PYZus{}method}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Estimación de densidad para relación entre variables \PYZdl{}V\PYZus{}3\PYZdl{} y \PYZdl{}V\PYZus{}1\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Estimación de densidad para relación entre variables \$V\_3\$ y
+\$V\_1\$')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Tarea1_JLAC_files/Tarea1_JLAC_20_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Tarea1_JLAC_files/Tarea1_JLAC_20_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Tarea1_JLAC_files/Tarea1_JLAC_20_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Se verifica que, efectivamente, la relación entre el número de pacientes
+diarios promedio y los días-cama es de aproximadamente 30, por lo que
+puede considerarse eliminar una de estas variables, ya que conllevan
+prácticamente la misma información (número de pacientes atendidos).
+Antes de eliminarlos, sin embargo, se realiza el análisis completo de
+colinealidad, y posteriormente se decide qué hacer con estos valores.
+
+\hypertarget{inciso-2.}{%
+\subparagraph{Inciso 2.}\label{inciso-2.}}
+
+Puede observarse que el número de condición de la matriz es muy elevado,
+lo que elucida una diferencia muy grande entre el mayor y menor valor
+singular de la matriz de datos, y sugiere problemas numéricos. También
+se ve elevado por la diferencia en escalas de las distintas variables,
+pero esto fue mencionado anteriormente.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{} Inciso 2.}
+\PY{n}{X} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{to\PYZus{}numpy}\PY{p}{(}\PY{p}{)}
+\PY{n}{Xcond} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{cond}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Número de condición de la matriz X: }\PY{l+s+si}{\PYZob{}}\PY{n}{Xcond}\PY{l+s+si}{:}\PY{l+s+s2}{.3e}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Número de condición de la matriz X: 1.270e+04
+    \end{Verbatim}
+
+    \hypertarget{inciso-3.}{%
+\subparagraph{Inciso 3.}\label{inciso-3.}}
+
+Puede observarse que, cuando se escalan y centran los datos, el número
+de condición se reduce en casi dos órdenes de magnitud, llegando a un
+valor de cerca de 200, que si bien sigue sugiriendo la posible presencia
+de colinealidad fuerte, el número de condición es mucho menor que antes.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{} Inciso 3.}
+\PY{n}{Xc} \PY{o}{=} \PY{n}{StandardScaler}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+\PY{n}{Xcond} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{cond}\PY{p}{(}\PY{n}{Xc}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Número de condición de la matriz Xc: }\PY{l+s+si}{\PYZob{}}\PY{n}{Xcond}\PY{l+s+si}{:}\PY{l+s+s2}{.3f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Número de condición de la matriz Xc: 222.643
+    \end{Verbatim}
+
+    \hypertarget{inciso-4.}{%
+\subparagraph{Inciso 4.}\label{inciso-4.}}
+
+Puede observarse de los factores de inflación de varianza que el mayor
+es de 357.83, y el segundo mayor de 337.35, correspondientes a la
+primera y tercera variable, por lo que se espera que en el modelo por
+mínimos cuadrados la varianza de los estimadores de estas variables sean
+muy elevadas, pudiendo llegar a provocar que se crea que no son
+estadísticamente significativas por la presencia de colinealidad.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{} Inciso 4.}
+\PY{n}{R} \PY{o}{=} \PY{n}{Xc}\PY{o}{.}\PY{n}{T} \PY{o}{@} \PY{n}{Xc}
+\PY{n}{VIF} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{R}\PY{p}{)}\PY{p}{)}
+\PY{k}{with} \PY{n}{np}\PY{o}{.}\PY{n}{printoptions}\PY{p}{(}\PY{n}{precision}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{suppress}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Factores de inflación de la varianza: }\PY{l+s+si}{\PYZob{}}\PY{n}{VIF}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Factores de inflación de la varianza: [357.83   0.47 337.35   0.96   0.28]
+    \end{Verbatim}
+
+    \hypertarget{inciso-5.}{%
+\subparagraph{Inciso 5.}\label{inciso-5.}}
+
+Puede observarse en la matriz \(\Pi\) que, efectivamente, existe una
+fuerte colinealidad asociada al cuarto número de condición, que,
+partiendo de los análisis anteriores, puede concluirse que es entre las
+variables \(V_1\) y \(V_3\). La presencia de esta colinealidad puede
+aumentar fuertemente la varianza de los estimadores del modelo lineal
+por mínimos cuadrados, por lo que se sugiere o eliminar una de las
+variables del modelo, o utilizar regresión regularizada (por ejemplo,
+Lasso o Ridge).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{} Inciso 5.}
+\PY{n}{U}\PY{p}{,} \PY{n}{D}\PY{p}{,} \PY{n}{Vh} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{svd}\PY{p}{(}\PY{n}{Xc}\PY{p}{)} \PY{c+c1}{\PYZsh{} NOTA: Vh = V.T}
+\PY{n}{phis} \PY{o}{=} \PY{n}{Vh}\PY{o}{.}\PY{n}{T}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{/}\PY{n}{D}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+\PY{n}{pis} \PY{o}{=} \PY{n}{phis}\PY{o}{.}\PY{n}{T}\PY{o}{/}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{phis}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+
+\PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{pis}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Blues}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Proporciones de la descomposición de las varianzas.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Número de condición}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Estimador}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 12.5, 'Estimador')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Tarea1_JLAC_files/Tarea1_JLAC_28_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{regresiuxf3n-ridge}{%
+\paragraph{Regresión ridge}\label{regresiuxf3n-ridge}}
+
+\hypertarget{inciso-1.}{%
+\subparagraph{Inciso 1.}\label{inciso-1.}}
+
+Utilizando el estimador del parámetro de Ridge propuesto, se obtiene el
+siguiente valor:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{p} \PY{o}{=} \PY{l+m+mi}{5} \PY{c+c1}{\PYZsh{} Número de parámetros a utilizar}
+\PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{Xc}\PY{p}{)}
+\PY{n}{res} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{lstsq}\PY{p}{(}\PY{n}{Xc}\PY{p}{,}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{to\PYZus{}numpy}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{,}\PY{n}{rcond}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{beta} \PY{o}{=} \PY{n}{res}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n}{SSR} \PY{o}{=} \PY{n}{res}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{sigma2} \PY{o}{=} \PY{n}{SSR}\PY{o}{/}\PY{p}{(}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{n}{p}\PY{p}{)}
+\PY{n}{lamb} \PY{o}{=} \PY{n}{p}\PY{o}{*}\PY{n}{sigma2}\PY{o}{/}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{beta}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Parámetro de Ridge estimado: }\PY{l+s+si}{\PYZob{}}\PY{n}{lamb}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{l+s+si}{:}\PY{l+s+s1}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Parámetro de Ridge estimado: 1.0156
+    \end{Verbatim}
+
+    \hypertarget{inciso-2.}{%
+\subparagraph{Inciso 2.}\label{inciso-2.}}
+
+Para el método de validación cruzada, se realiza con ayuda de los
+modelos Ridge de sklearn. Puede observarse que el resultado de la
+validación cruzada cuando solamente se deja un valor fuera contra si se
+hace un 5-fold CV muestra dos valores de parámetro de Ridge sumamente
+distintos. En la gráfica en la que se muestra el error cuadrático medio
+contra \(\lambda\) para cada valor removido, puede observarse que existe
+un punto sumamente influyente, por lo que hace que se desplace tanto en
+el parámetro de Ridge estimado con el estimador de mínimos cuadrados
+usando todos los valores, como por validación cruzada. Esto sugiere que
+existe un punto sumamente influyente en la regresión, que tenga mucho
+``apalancamiento'' sobre el valor de los estimadores; sospecha que se
+observa desde el primer inciso en el análisis de colinealidad -- incluso
+desde el análisis previo -- al notar que la distribución tiene valores
+sumamente alejados de las medidas de tendencia central. Por esto, se
+toma el valor de parámetro de Ridge menor, y se considera la opción de
+transformar los datos y no solo estandarizarlos. Este ejercicio se verá
+tras ser respondidos todos los incisos.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{lambdas} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{logspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Modelo con LOOCV}
+\PY{n}{ridge} \PY{o}{=} \PY{n}{RidgeCV}\PY{p}{(}\PY{n}{lambdas}\PY{p}{,}\PY{n}{store\PYZus{}cv\PYZus{}values}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{Xc}\PY{p}{,}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{lambdas}\PY{p}{,}\PY{n}{ridge}\PY{o}{.}\PY{n}{cv\PYZus{}values\PYZus{}}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Errores cuadráticos medios de cada validación cruzada con cada valor removido}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MSE (horas de trabajo/mes)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{index}\PY{o}{.}\PY{n}{to\PYZus{}numpy}\PY{p}{(}\PY{p}{)}\PY{p}{,}\PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{ncol}\PY{o}{=}\PY{l+m+mi}{6}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Con validación cruzada Leave One Out}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Error cuadrático medio: }\PY{l+s+si}{\PYZob{}}\PY{n}{mean\PYZus{}squared\PYZus{}error}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}\PY{n}{ridge}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{Xc}\PY{p}{)}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Valor del parámetro de Ridge: }\PY{l+s+si}{\PYZob{}}\PY{n}{ridge}\PY{o}{.}\PY{n}{alpha\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Modelo con 5\PYZhy{}Fold CV}
+\PY{n}{folder} \PY{o}{=} \PY{n}{KFold}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{,}\PY{n}{shuffle}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{9}\PY{p}{)}
+\PY{n}{ridge\PYZus{}2} \PY{o}{=} \PY{n}{RidgeCV}\PY{p}{(}\PY{n}{lambdas}\PY{p}{,}\PY{n}{cv}\PY{o}{=}\PY{n}{folder}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{Xc}\PY{p}{,}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Con 5\PYZhy{}fold CV:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Error cuadrático medio: }\PY{l+s+si}{\PYZob{}}\PY{n}{mean\PYZus{}squared\PYZus{}error}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{W}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,}\PY{n}{ridge\PYZus{}2}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{Xc}\PY{p}{)}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Valor del parámetro de Ridge: }\PY{l+s+si}{\PYZob{}}\PY{n}{ridge\PYZus{}2}\PY{o}{.}\PY{n}{alpha\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Con validación cruzada Leave One Out
+Error cuadrático medio: 500846.57397637964
+Valor del parámetro de Ridge: 1.389495494373136
+Con 5-fold CV:
+Error cuadrático medio: 325283.5424489137
+Valor del parámetro de Ridge: 0.2559547922699533
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Tarea1_JLAC_files/Tarea1_JLAC_32_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{inciso-3.}{%
+\subparagraph{Inciso 3.}\label{inciso-3.}}
+
+A continuación se muestran los valores predichos por los modelos, así
+como sus parámetros en la traza de Ridge. Se añade adicionalmente una
+estimación de la distribución de los residuales con cada regresión.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{coefs} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{scores} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{k}{for} \PY{n}{value} \PY{o+ow}{in} \PY{n}{lambdas}\PY{p}{:}
+    \PY{n}{model} \PY{o}{=} \PY{n}{Ridge}\PY{p}{(}\PY{n}{value}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{Xc}\PY{p}{,}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n}{coefs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{model}\PY{o}{.}\PY{n}{coef\PYZus{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{lambdas}\PY{p}{,}\PY{n}{coefs}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{lambda\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{beta\PYZus{}i\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{beta\PYZus{}}\PY{l+s+si}{\PYZob{}V\PYZus{}1\PYZcb{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{beta\PYZus{}}\PY{l+s+si}{\PYZob{}V\PYZus{}2\PYZcb{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{beta\PYZus{}}\PY{l+s+si}{\PYZob{}V\PYZus{}3\PYZcb{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{beta\PYZus{}}\PY{l+s+si}{\PYZob{}V\PYZus{}4\PYZcb{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{beta\PYZus{}}\PY{l+s+si}{\PYZob{}V\PYZus{}5\PYZcb{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylim}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{7000}\PY{p}{,}\PY{l+m+mi}{12500}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{which}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{both}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{vlines}\PY{p}{(}
+    \PY{n}{x} \PY{o}{=} \PY{p}{[}\PY{n}{lamb}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{ridge\PYZus{}2}\PY{o}{.}\PY{n}{alpha\PYZus{}}\PY{p}{,} \PY{n}{ridge}\PY{o}{.}\PY{n}{alpha\PYZus{}}\PY{p}{]}\PY{p}{,}
+    \PY{n}{ymin} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{7000}\PY{p}{,}
+    \PY{n}{ymax} \PY{o}{=} \PY{l+m+mi}{12500}\PY{p}{,} 
+    \PY{n}{label} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Estimado con ecuación}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Estimado con CV 5\PYZhy{}fold}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Estimado con LOOCV}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+    \PY{n}{colors} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{alpha} \PY{o}{=} \PY{l+m+mf}{0.2}\PY{p}{,}
+    \PY{n}{linestyles} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dashed}\PY{l+s+s1}{\PYZsq{}}
+    \PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Traza de Ridge para regresión de datos del hospital.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{Y} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{heur} \PY{o}{=} \PY{n}{Ridge}\PY{p}{(}\PY{n}{lamb}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{Xc}\PY{p}{,}\PY{n}{Y}\PY{p}{)}
+\PY{n}{Y\PYZus{}ridge\PYZus{}h} \PY{o}{=} \PY{n}{heur}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{Xc}\PY{p}{)}
+\PY{n}{Y\PYZus{}ridge\PYZus{}1} \PY{o}{=} \PY{n}{ridge}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{Xc}\PY{p}{)}
+\PY{n}{Y\PYZus{}ridge\PYZus{}2} \PY{o}{=} \PY{n}{ridge\PYZus{}2}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{Xc}\PY{p}{)}
+\PY{n}{preds} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{data}\PY{o}{=} \PY{p}{\PYZob{}}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W ridge heurística}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{Y\PYZus{}ridge\PYZus{}h}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W ridge LOOCV}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{Y\PYZus{}ridge\PYZus{}1}\PY{p}{,}
+    \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{W ridge 5\PYZhy{}fold}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{Y\PYZus{}ridge\PYZus{}2}
+\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Parámetros:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ Ridge heurística: }\PY{l+s+si}{\PYZob{}}\PY{n}{heur}\PY{o}{.}\PY{n}{coef\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ Ridge LOOCV: }\PY{l+s+si}{\PYZob{}}\PY{n}{ridge}\PY{o}{.}\PY{n}{coef\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ Ridge 5\PYZhy{}fold\PYZus{} }\PY{l+s+si}{\PYZob{}}\PY{n}{ridge\PYZus{}2}\PY{o}{.}\PY{n}{coef\PYZus{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{display}\PY{p}{(}\PY{n}{preds}\PY{p}{)}
+\PY{n}{preds}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{Y}\PY{p}{)}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{kde}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Estimación de densidad de residuales de regresiones}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Residual (horas de trabajo/mes)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Kurtosis en exceso de cada distribución de residuales:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}}\PY{n}{preds}\PY{o}{.}\PY{n}{transform}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{Y}\PY{p}{)}\PY{o}{.}\PY{n}{kurtosis}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Parámetros:
+ Ridge heurística: [1789.51214424 1339.21595168 1864.64718793  439.50409058
+-168.34325404]
+ Ridge LOOCV: [1680.68197642 1346.36298023 1740.8702524   591.94206841
+-89.36644251]
+ Ridge 5-fold\_ [2244.86274015 1248.1296321  2430.60583907 -253.08903909
+-492.27723077]
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+    W ridge heurística  W ridge LOOCV  W ridge 5-fold
+0           707.954120     696.563467      801.712875
+1          1041.654980    1102.231476      859.228087
+2           914.118285     879.705927     1103.318373
+3          1182.782343    1167.042227     1271.616396
+4          1666.993584    1686.271751     1628.349638
+5          1991.713891    1956.139355     2166.367039
+6          1835.804976    1863.011607     1762.275126
+7          1938.893107    1945.542579     1946.565694
+8          3008.928737    3059.315125     2826.337592
+9          4887.985776    5045.170147     4178.590185
+10         3315.915604    3324.498943     3302.292592
+11         4242.738453    4210.328481     4391.774542
+12         4511.362179    4550.466801     4337.015273
+13         8758.068871    8739.132041     8794.270820
+14        11881.143192   11844.981484    12049.984083
+15        14614.316187   14537.496195    14858.171785
+16        19023.785714   18916.262392    19246.289902
+    \end{Verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Kurtosis en exceso de cada distribución de residuales:
+W ridge heurística    1.003455
+W ridge LOOCV         1.047082
+W ridge 5-fold        1.646048
+dtype: float64
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Tarea1_JLAC_files/Tarea1_JLAC_34_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Tarea1_JLAC_files/Tarea1_JLAC_34_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Puede verse en el gráfico de estimación de densidad que aunque se
+aproximan a una normal los residuales estimados, la kurtosis en exceso
+es un poco mayor que una normal, lo que sugiere colas un poco más
+pesadas.
+
+\hypertarget{inciso-4.}{%
+\subparagraph{Inciso 4.}\label{inciso-4.}}
+
+A continuación se muestran los gráficos de \(Y_i\) contra
+\(\widehat{Y}_i\) para cada una de las regresiones.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{fig}\PY{p}{,} \PY{n}{axs} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{sharex}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}\PY{n}{sharey}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{figwidth}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Gráficos de predicción contra valor real para cada regresión}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{lims} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{20000}\PY{p}{]}
+\PY{n}{axs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{Y}\PY{p}{,}\PY{n}{Y\PYZus{}ridge\PYZus{}h}\PY{p}{)}
+\PY{n}{axs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{lims}\PY{p}{,}\PY{n}{lims}\PY{p}{,}\PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dashed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axs}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{Y}\PY{p}{,}\PY{n}{Y\PYZus{}ridge\PYZus{}1}\PY{p}{)}
+\PY{n}{axs}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{lims}\PY{p}{,}\PY{n}{lims}\PY{p}{,}\PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dashed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axs}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{Y}\PY{p}{,}\PY{n}{Y\PYZus{}ridge\PYZus{}2}\PY{p}{)}
+\PY{n}{axs}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{lims}\PY{p}{,}\PY{n}{lims}\PY{p}{,}\PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dashed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Horas de trabajo/mes (predicho)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axs}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Horas de trabajo/mes (real)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ridge con heurística}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axs}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ridge con LOOCV}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axs}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ridge con 5\PYZhy{}Fold CV}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Ridge con 5-Fold CV')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{Tarea1_JLAC_files/Tarea1_JLAC_36_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    De estas gráficas puede observarse que las predicciones tienden a estar
+cerca de la línea identidad, lo cual sugiere que el modelo se acerca a
+las predicciones esperadas. Se observa nuevamente que probablemente los
+4 valores más elevados pueden tender a ser muy influyentes en los
+parámetros de la regresión, pues se encuentran muy separados del resto
+de los valores. \#\#\#\#\# Inciso 5. Se respondió a la vez que el inciso
+3, para mostrar los valores de los parámetros. \#\#\#\#\# Inciso 6. A
+continuación se muestran los factores de inflación de varianza
+calculados, tanto para un modelo lineal ordinario como para el Ridge,
+con las siguientes ecuaciones:
+\[VIF_j=n(\mathbf{X}_c^T\mathbf{X}_c)^{-1}_{jj},j=\{1,2,...,p\}\] Para
+los VIF de Ridge:
+\[VIF_j=n\left[(\mathbf{X}_c^T\mathbf{X}_c+\lambda I)^{-1}\mathbf{X}_c^T\mathbf{X}_c(\mathbf{X}_c^T\mathbf{X}_c+\lambda I)^{-1}\right]_{jj}\]
+Los VIF son los siguientes:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} VIF lineal}
+\PY{n}{VIFs} \PY{o}{=} \PY{n}{n}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{Xc}\PY{o}{.}\PY{n}{T}\PY{n+nd}{@Xc}\PY{p}{)}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} VIF ridges:}
+\PY{n}{lambdas} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Heurística}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{lamb}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{LOOCV:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{ridge}\PY{o}{.}\PY{n}{alpha\PYZus{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{5\PYZhy{}Fold CV}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{ridge\PYZus{}2}\PY{o}{.}\PY{n}{alpha\PYZus{}}\PY{p}{\PYZcb{}}
+\PY{k}{with} \PY{n}{np}\PY{o}{.}\PY{n}{printoptions}\PY{p}{(}\PY{n}{precision}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{suppress}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{VIF lineal: }\PY{l+s+si}{\PYZob{}}\PY{n}{VIFs}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{k}{for} \PY{n}{value} \PY{o+ow}{in} \PY{n}{lambdas}\PY{p}{:}
+        \PY{n}{mat} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{Xc}\PY{o}{.}\PY{n}{T}\PY{n+nd}{@Xc} \PY{o}{+} \PY{n}{lambdas}\PY{p}{[}\PY{n}{value}\PY{p}{]}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{n}{p}\PY{p}{)}\PY{p}{)} \PY{o}{@} \PY{n}{Xc}\PY{o}{.}\PY{n}{T}\PY{n+nd}{@Xc} \PY{o}{@} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{inv}\PY{p}{(}\PY{n}{Xc}\PY{o}{.}\PY{n}{T}\PY{n+nd}{@Xc} \PY{o}{+} \PY{n}{lambdas}\PY{p}{[}\PY{n}{value}\PY{p}{]}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{eye}\PY{p}{(}\PY{n}{p}\PY{p}{)}\PY{p}{)}
+        \PY{n}{vals} \PY{o}{=} \PY{p}{(}\PY{n}{n}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{diag}\PY{p}{(}\PY{n}{mat}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{VIF de ridge }\PY{l+s+si}{\PYZob{}}\PY{n}{value}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{: }\PY{l+s+si}{\PYZob{}}\PY{n}{vals}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+VIF lineal: [6083.13    7.95 5734.87   16.35    4.8 ]
+VIF de ridge Heurística: [1.07 2.9  1.19 2.94 1.41]
+VIF de ridge LOOCV:: [0.75 2.25 0.83 2.13 1.23]
+VIF de ridge 5-Fold CV: [3.39 5.76 3.78 7.77 2.34]
+    \end{Verbatim}
+
+    \hypertarget{inciso-7.}{%
+\subparagraph{Inciso 7.}\label{inciso-7.}}
+
+La regresión Ridge ayuda para disminuir los problemas de colinealidad,
+observado claramente con la reducción en los factores de inflación de la
+varianza. Las predicciones se acercan a los valores reales, y los
+residuales se aproximan a una distribución normal. Debido a que existían
+algunos valores más influyentes en las distribuciones, las validaciones
+cruzadas muestran valores muy diferentes dependiendo de los datos usados
+para la validación. Si no se hace regresión Ridge, puede parecer que
+algunas variables no son significativas para explicar las horas de
+trabajo por mes, a pesar de ser muy buenos predictores, debido al
+incremento de varianza en los estimadores provocados por la
+colinealidad.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

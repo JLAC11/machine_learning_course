@@ -1,0 +1,63 @@
+\documentclass{amsart}
+
+\usepackage[spanish,mexico]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2cm]{geometry}
+\usepackage[labelfont=bf,textfont=it]{caption,subcaption}
+\usepackage{amsmath,amssymb,amsfonts,bbm}
+\usepackage{graphicx,fancyhdr}
+\usepackage{csquotes}
+
+\author{José Luis Aguilar Charfén}
+\date{\today}
+\title{Tarea 3: Machine Learning}
+
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\ind}[1][]{\mathbbm{1}_{#1}}
+
+\begin{document}
+    \maketitle
+    Para esta tarea suponga el caso de clasificación binaria donde $Y \in \{0, 1\}$,
+    sea $\eta(x) = \mathbb{P}(Y = 1|X = x)$ y $g^*$ el clasificador bayesiano 
+    óptimo. El error bayesiano óptimo se define como el error de clasificación 
+    del clasficador bayesiano óptimo, denotado como:
+    $$L^*=\P(g^*(X)\ne Y)$$
+    \begin{enumerate}
+        \item Sea $g$ cualquier otro clasificador. Demuestre que: 
+        $$\P(g(X)\ne Y)-L^* = 2\E\left[\left|\eta(X)-\frac{1}{2}\right|\ind[g^*(X)\ne g(X)]\right]$$
+        \item Sea $\tilde{\eta}:\mathcal{X}\rightarrow [0,1]$, y:
+        $$g(x) = \begin{cases}
+            1 & \text{si }\tilde{\eta}(x) >\frac{1}{2}, \\
+            0 & \text{en otro caso.}
+        \end{cases}$$
+
+        Demuestre que $$\P(g(X)\ne Y)-L^* \le 2\E\left|\eta(X)-\tilde{\eta}(X)\right|$$
+        \item Supongamos que $(X,Y)$ tiene la siguiente distribución conjunta: 
+        \begin{table}[!ht]
+            \caption{Distribución conjunta de $(X,Y)$ y distribución marginal de $X$.}\label{tab:prob}
+            \begin{tabular}{c | c c c}
+                \hline
+                        & $X=0$ & $X=1$ & $X=2$ \\\hline\hline
+                $Y=0$   & 0.15  & 0.1   & 0.3   \\\hline
+                $Y=1$   & 0.15  & 0.2   & 0.1   \\\hline
+            $\P(X=x)$   & 0.3   & 0.3   & 0.4   \\\hline
+            \end{tabular}   
+        \end{table}
+        \begin{itemize}
+            \item Calcula el clasificador Bayesiano óptimo para $Y$ si la función 
+            de costo es la indicadora (falso positivo tiene el mismo costo que un falso negativo)
+            \item Calcula la probabilidad de cometer un error
+            \item Calcula el clasificador Bayesiano óptimo para $Y$ si predecir 
+            mal un 0 cuesta el doble que predecir mal un 1.
+        \end{itemize}
+    \end{enumerate}
+
+    \section*{Solución}
+    \input{primerinciso}
+    
+    \input{segundoinciso}
+
+    \input{tercerinciso.tex}
+
+\end{document}

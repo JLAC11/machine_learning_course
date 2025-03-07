@@ -1,0 +1,8 @@
+[0] Config.pm:307> INFO - This is Biber 2.17
+[0] Config.pm:310> INFO - Logfile is '/Users/joseluisaguilarcharfen/Documents/IQ/MatemÃ¡ticas/Machine Learning/Proyecto_2/proyecto2_JLAC.blg'
+[237] biber:340> INFO - === Tue May  3, 2022, 21:11:33
+[493] Biber.pm:418> INFO - Reading '/Users/joseluisaguilarcharfen/Documents/IQ/Matemáticas/Machine Learning/Proyecto_2/proyecto2_JLAC.bcf'
+[760] Utils.pm:409> ERROR - Error: Found biblatex control file version 3.7, expected version 3.8.
+This means that your biber (2.17) and biblatex (3.14) versions are incompatible.
+See compat matrix in biblatex or biber PDF documentation.
+[761] Biber.pm:135> INFO - ERRORS: 1

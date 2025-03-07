@@ -1,0 +1,78 @@
+\subsection*{Tercer ejercicio}
+
+Para el tercer ejercicio, se divide en incisos la solución. En su primer inciso,
+considerando en primer lugar a $\eta(x)$, partiendo de la tabla \ref{tab:prob}:
+
+\begin{align}
+    \eta(x) &= \begin{cases}
+        \frac{0.15}{0.3}, & x=0 \\
+        \frac{0.2}{0.3}, & x=1 \\
+        \frac{0.1}{0.4}, & x=2
+    \end{cases} \\
+    &= 
+    \begin{cases}
+        \frac{1}{2}, & x=0 \\
+        \frac{2}{3}, & x=1 \\
+        \frac{1}{4}, & x=2
+    \end{cases}
+\end{align}
+
+Si un falso positivo tiene el mismo costo que un falso negativo, entonces la función de costo puede ser definida de la siguiente manera:
+\begin{equation}
+    L^* = \P(Y=1\cap g^*(X)=0) +  \P(Y=0\cap g^*(X)=1)
+\end{equation}
+Que es equivalente a cómo se ha descrito desde el comienzo, por lo que $g^*(x)$
+sigue siendo igual. Por lo tanto, el clasificador óptimo de Bayes es el siguiente: 
+\begin{equation}
+    g^*(x) = 
+    \begin{cases}
+        0, & x=0 \\
+        1, & x=1 \\
+        0, & x=2
+    \end{cases}\label{eq:Bayes}
+\end{equation}
+Que es la respuesta al primer inciso. Calculando la probabilidad de cometer un error: 
+\begin{equation}
+    \P(Y\ne g(X)) = \P(Y=1\cap g^*(X)=0) +  \P(Y=0\cap g^*(X)=1)
+\end{equation}
+Por ley de probabilidad total puede escribirse de la siguiente manera: 
+\begin{align*}
+    \P(Y\ne g(X)) &= \sum_{x=0}^2 \P(Y=1\cap g^*(x)=0) + \P(Y=0\cap g^*(x)=1) \\
+     &= 0 + 0.15 + 0.1 + 0 + 0 + 0.1 \\
+     &= 0.35
+\end{align*} 
+Y con esto concluye el segundo inciso del tercer ejercicio. Para el tercer inciso, 
+la función de costo puede describirse de la siguiente manera: 
+\begin{align}
+    L^* &= \P(Y=1\cap g^*(X)=0) +  2\P(Y=0\cap g^*(X)=1) \\
+        &= \E_X\left[P(Y=1|X=x)\ind[g^*(X=0)]+2P(Y=1|X=x)\ind[g^*(X=1)]\right] \\
+        &= \E_X\left[\eta(X)\ind[g^*(X=0)]+2(1-\eta(X))\ind[g^*(X=1)]\right]
+\end{align}
+Entonces, $g^*(x)$ puede ser minimizado tomando para todo $x$:
+\begin{align}
+    g^*(x) &= 
+    \begin{cases}
+        1, & \eta(x) > 2-2\eta(x), \\
+        0 & \text{en otro caso.} 
+    \end{cases} \\
+    &=
+    \begin{cases}
+        1, & \eta(x) > \frac{2}{3}, \\
+        0 & \text{en otro caso.} 
+    \end{cases}
+\end{align}
+Por lo tanto, el clasificador de Bayes óptimo es el siguiente: 
+\begin{equation}
+    g^*(x) = 
+    \begin{cases}
+        0, & x=0 \\
+        0, & x=1 \\
+        0, & x=2
+    \end{cases}
+\end{equation}
+Y su costo, en este caso, sería de 0.45\footnote{No es muy complicado de mostrar; se sigue la misma lógica que en el inciso anterior. Se omite el procedimiento debido a que queda fuera del alcande de la pregunta y se menciona meramente como comentario.}. Si por el otro lado, en vez de tomar como límite 
+que $\eta(x) > \frac{2}{3}$ para que lo clasifique como 1, fuera una desigualdad 
+no estricta $(\eta(x) \ge \frac{2}{3})$, el clasificador de Bayes sería igual al mostrado en la ecuación \ref{eq:Bayes}, 
+con un costo de 0.45 igualmente.
+
+
